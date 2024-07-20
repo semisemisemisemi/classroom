@@ -2,7 +2,7 @@ name: Autograding Tests
 on:
   push:
   workflow_dispatch:
-  repository_dispatch:
+  repository_dispatch
 
 permissions:
   checks: write
@@ -21,14 +21,20 @@ jobs:
     - name: Install dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y build-essential cmake libgtest-dev
+        sudo apt-get install -y build-essential cmake git
+
+    - name: Clone Google Test
+      run: |
+        cd /usr/src
+        sudo git clone https://github.com/google/googletest.git
 
     - name: Build Google Test
       run: |
-        cd /usr/src/gtest
-        sudo cmake CMakeLists.txt
+        cd /usr/src/googletest
+        sudo cmake .
         sudo make
-        sudo cp *.a /usr/lib
+        sudo cp googletest/build/lib/*.a /usr/lib
+        sudo cp googlemock/build/lib/*.a /usr/lib
 
     - name: Configure CMake
       run: cmake .
@@ -39,7 +45,7 @@ jobs:
     - name: Run tests
       run: make test
       continue-on-error: true
-      
+
     - name: Autograding Reporter
       uses: classroom-resources/autograding-grading-reporter@v1
       with:

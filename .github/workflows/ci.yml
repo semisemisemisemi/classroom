@@ -1,7 +1,8 @@
 name: Autograding Tests
+
 on:
   push:
-  workflow_dispatch
+  workflow_dispatch:
   repository_dispatch
 
 permissions:
@@ -21,7 +22,8 @@ jobs:
     - name: Install dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y build-essential cmake git
+        sudo apt-get install -y build-essential cmake git python3 python3-pip
+        pip3 install openai
 
     - name: Clone Google Test
       run: |
@@ -43,10 +45,16 @@ jobs:
       run: make
 
     - name: Run tests
-      run: make test
-      continue-on-error: true
+      run: |
+        make test || true
+        ./build/test_calculator > result.log 2>&1
+        cat result.log
 
-    - name: Autograding Reporter
-      uses: classroom-resources/autograding-grading-reporter@v1
+    - name: Analyze with ChatGPT
+      run: python3 analyze_code.py
+
+    - name: Upload feedback
+      uses: actions/upload-artifact@v2
       with:
-        runners: run-autograding-tests
+        name: feedback
+        path: feedback.log

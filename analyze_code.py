@@ -2,7 +2,7 @@ import openai
 import os
 
 # OpenAI API 키 설정
-openai.api_key = os.getenv("sk-proj-BYf3QBxj6sztULQDo2mwT3BlbkFJHzTsvuzRewq8kxfjbeK0")
+openai.api_key = os.getenv("OPENAI_API_KEY")
 
 def get_code_feedback(student_code, test_results):
     prompt = f"""

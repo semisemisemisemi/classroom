@@ -24,7 +24,7 @@ def get_code_feedback(student_code, test_results):
     return response.choices[0].text.strip()
 
 # 학생 코드와 테스트 결과 읽기
-with open("student_code.cpp", "r") as file:
+with open("src/main.cpp", "r") as file:
     student_code = file.read()
 
 with open("result.log", "r") as file:

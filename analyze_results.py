@@ -2,10 +2,12 @@ import openai
 import os
 
 def analyze_test_results():
-    openai.api_key = os.getenv('OPENAI_API_KEY')
+    api_key = os.getenv('OPENAI_API_KEY')
     
-    if not openai.api_key:
+    if not api_key:
         raise ValueError("API key not found")
+    
+    openai.api_key = api_key
 
     with open('build/result.log', 'r') as file:
         test_results = file.read()
@@ -24,4 +26,3 @@ def analyze_test_results():
 
 if __name__ == "__main__":
     analyze_test_results()
-

@@ -32,8 +32,10 @@ jobs:
         cd /usr/src/googletest
         sudo cmake .
         sudo make
-        sudo cp googletest/lib/*.a /usr/lib
-        sudo cp googlemock/lib/*.a /usr/lib
+        sudo cp googletest/libgtest.a /usr/lib
+        sudo cp googlemock/libgmock.a /usr/lib
+        sudo cp googletest/libgtest_main.a /usr/lib
+        sudo cp googlemock/libgmock_main.a /usr/lib
 
     - name: Configure CMake
       run: cmake .

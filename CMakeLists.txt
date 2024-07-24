@@ -11,6 +11,6 @@ include_directories(/usr/src/googletest/googlemock/include) # Google Mock 경로
 add_executable(calculator src/main.cpp src/calculator.cpp)
 
 enable_testing()
-add_executable(test_calculator tests/test_calculator.cpp src/calculator.cpp)
+add_executable(test_calculator test/test_calculator.cpp src/calculator.cpp)
 target_link_libraries(test_calculator gtest gtest_main gmock gmock_main) # Google Test 라이브러리 링크
 add_test(NAME calculator_test COMMAND test_calculator)

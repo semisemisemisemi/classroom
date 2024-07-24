@@ -1,8 +1,7 @@
-import { Configuration, OpenAIApi } from 'openai';
 import fs from 'fs';
+import { Configuration, OpenAIApi } from 'openai';
 
-const OPENAI_API_KEY = 'sk-None-Btg57wnjrD3JydbDCltVT3BlbkFJNpL1Oo1yiNqS0IaHdYR5';
-const apiKey = 'sk-proj-BYf3QBxj6sztULQDo2mwT3BlbkFJHzTsvuzRewq8kxfjbeK0';
+const apiKey = process.env.OPENAI_API_KEY;
 
 if (!apiKey) {
   throw new Error('API key not found');

@@ -1,4 +1,5 @@
 #include "calculator.h"
+#include <stdexcept> // 추가된 부분
 
 int Calculator::add(int a, int b) {
     return a + b;
@@ -18,4 +19,5 @@ double Calculator::divide(int a, int b) {
     } else {
         throw std::invalid_argument("Division by zero");
     }
+    return 0; // 추가된 부분
 }

@@ -15,7 +15,7 @@ def analyze_test_results():
         ]
     )
 
-    feedback = response.choices[0].message['content'].strip()
+    feedback = response.choices[0]['message']['content'].strip() 
     with open('feedback.log', 'w') as file:
         file.write(feedback)
 

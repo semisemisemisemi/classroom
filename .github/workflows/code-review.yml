@@ -48,27 +48,45 @@ jobs:
         make
 
     - name: Run tests
+      id: run_tests
       run: |
         cd build
         ctest --output-on-failure > result.log 2>&1
         cat result.log
+      continue-on-error: true
 
     - name: Analyze with ChatGPT
-      uses: anc95/ChatGPT-CodeReview@main
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-        LANGUAGE: Korean
-        MODEL: gpt-3.5-turbo
-        CUSTOM_PROMPT: ${{ steps.get_prompt.outputs.prompt }}
+      if: failure()
+      run: |
+        python3 <<EOF
+import openai
+import os
+
+openai.api_key = os.getenv('OPENAI_API_KEY')
+
+with open('build/result.log', 'r') as file:
+    test_results = file.read()
+
+response = openai.Completion.create(
+  engine="gpt-3.5-turbo",
+  prompt=f"테스트 결과를 분석하고 피드백을 제공합니다: {test_results}",
+  max_tokens=500
+)
+
+feedback = response.choices[0].text.strip()
+with open('feedback.log', 'w') as file:
+    file.write(feedback)
+EOF
 
     - name: Upload feedback
       uses: actions/upload-artifact@v2
       with:
         name: feedback
-        path: build/feedback.log
+        path: feedback.log
 
-    - name: Get custom prompt
-      id: get_prompt
-      run: |
-        echo "::set-output name=prompt::$(cat custom_prompt.txt)"
+    - name: Comment on PR with feedback
+      if: failure()
+      uses: marocchino/sticky-pull-request-comment@v2
+      with:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        path: feedback.log

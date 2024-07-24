@@ -57,8 +57,9 @@ jobs:
 
     - name: Analyze with ChatGPT
       if: always()
+      env:
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
       run: |
-        export OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
         python3 analyze_results.py
 
     - name: Upload feedback

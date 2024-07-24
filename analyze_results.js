@@ -1,6 +1,7 @@
 import { ChatGPTAPI } from 'chatgpt';
 import fs from 'fs';
 
+const OPENAI_API_KEY = 'OPENAI_API_KEY';
 const apiKey = process.env.OPENAI_API_KEY;
 
 if (!apiKey) {

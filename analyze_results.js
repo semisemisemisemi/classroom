@@ -1,6 +1,7 @@
 import fs from 'fs';
 import { Configuration, OpenAIApi } from 'openai';
 
+// 환경 변수에서 API 키를 가져옵니다.
 const apiKey = process.env.OPENAI_API_KEY;
 
 if (!apiKey) {

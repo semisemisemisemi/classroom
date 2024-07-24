@@ -1,48 +1,25 @@
 import { ChatGPTAPI } from 'chatgpt';
 import fs from 'fs';
-import dotenv from 'dotenv';
-
-dotenv.config();
 
 const apiKey = process.env.OPENAI_API_KEY;
 
 if (!apiKey) {
-    throw new Error('API key not found');
+  throw new Error('API key not found');
 }
 
-const chatAPI = new ChatGPTAPI({
-    apiKey: apiKey,
-    apiBaseUrl: process.env.OPENAI_API_ENDPOINT || 'https://api.openai.com/v1',
-    completionParams: {
-        model: process.env.MODEL || 'gpt-3.5-turbo',
-        temperature: +(process.env.TEMPERATURE || 0) || 1,
-        top_p: +(process.env.TOP_P || 0) || 1,
-        max_tokens: process.env.MAX_TOKENS ? +process.env.MAX_TOKENS : undefined,
-    },
+const api = new ChatGPTAPI({ apiKey });
+
+async function analyzeTestResults() {
+  const testResults = fs.readFileSync('build/result.log', 'utf8');
+  const prompt = `테스트 결과를 분석하고 피드백을 제공합니다: ${testResults}`;
+
+  const response = await api.sendMessage(prompt);
+
+  const feedback = response.text.trim();
+  fs.writeFileSync('feedback.log', feedback);
+}
+
+analyzeTestResults().catch(error => {
+  console.error(error);
+  process.exit(1);
 });
-
-const generatePrompt = (testResults) => {
-    const answerLanguage = process.env.LANGUAGE
-        ? `Answer me in ${process.env.LANGUAGE},`
-        : '';
-
-    const prompt = process.env.PROMPT ||
-        'Below are the test results. Please analyze the failures and provide feedback along with the correct code:';
-
-    return `${prompt} ${answerLanguage}:
-    ${testResults}
-    `;
-};
-
-const analyzeTestResults = async () => {
-    const testResults = fs.readFileSync('build/result.log', 'utf-8');
-    const prompt = generatePrompt(testResults);
-
-    console.time('code-review cost');
-    const res = await chatAPI.sendMessage(prompt);
-    console.timeEnd('code-review cost');
-
-    fs.writeFileSync('feedback.log', res.text);
-};
-
-analyzeTestResults().catch(console.error);

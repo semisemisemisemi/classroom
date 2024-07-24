@@ -37,15 +37,20 @@ jobs:
         sudo cp /usr/src/googletest/build/lib/*.a /usr/lib
 
     - name: Configure CMake
-      run: cmake .
+      run: |
+        mkdir -p build
+        cd build
+        cmake ..
 
     - name: Build the project
-      run: make
+      run: |
+        cd build
+        make
 
     - name: Run tests
       run: |
-        make test || true
-        ./build/test_calculator > result.log 2>&1
+        cd build
+        ctest --output-on-failure > result.log 2>&1
         cat result.log
 
     - name: Analyze with ChatGPT
@@ -61,7 +66,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: feedback
-        path: feedback.log
+        path: build/feedback.log
 
     - name: Get custom prompt
       id: get_prompt

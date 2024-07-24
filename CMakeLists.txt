@@ -6,8 +6,6 @@ project(Calculator)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-set(CMAKE_CXX_STANDARD 11)
-
 include_directories(include)
 include_directories(/usr/src/googletest/googletest/include) # Google Test 경로 추가
 include_directories(/usr/src/googletest/googlemock/include) # Google Mock 경로 추가

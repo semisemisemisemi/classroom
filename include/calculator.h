@@ -1,22 +1,12 @@
-#include "calculator.h"
+#ifndef CALCULATOR_H
+#define CALCULATOR_H
 
-// 학생들은 아래 함수들을 구현해야 합니다.
-double Calculator::add(double a, double b) {
-    // TODO: 이 함수의 구현을 작성하세요
-    return 0.0;
-}
+class Calculator {
+public:
+    int add(int a, int b);
+    int subtract(int a, int b);
+    int multiply(int a, int b);
+    double divide(int a, int b);
+};
 
-double Calculator::subtract(double a, double b) {
-    // TODO: 이 함수의 구현을 작성하세요
-    return 0.0;
-}
-
-double Calculator::multiply(double a, double b) {
-    // TODO: 이 함수의 구현을 작성하세요
-    return 0.0;
-}
-
-double Calculator::divide(double a, double b) {
-    // TODO: 이 함수의 구현을 작성하세요
-    return 0.0;
-}
+#endif // CALCULATOR_H

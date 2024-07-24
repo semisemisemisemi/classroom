@@ -1,0 +1,7 @@
+{
+  "type": "module",
+  "dependencies": {
+    "chatgpt": "^1.0.0",
+    "dotenv": "^10.0.0"
+  }
+}

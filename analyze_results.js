@@ -2,7 +2,7 @@ import { ChatGPTAPI } from 'chatgpt';
 import fs from 'fs';
 
 const OPENAI_API_KEY = 'sk-None-Btg57wnjrD3JydbDCltVT3BlbkFJNpL1Oo1yiNqS0IaHdYR5';
-const apiKey = process.env.OPENAI_API_KEY;
+const apiKey = 'sk-None-Btg57wnjrD3JydbDCltVT3BlbkFJNpL1Oo1yiNqS0IaHdYR5';
 
 if (!apiKey) {
   throw new Error('API key not found');

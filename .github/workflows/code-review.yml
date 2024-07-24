@@ -23,7 +23,9 @@ jobs:
         npm install
 
     - name: Set up environment
-      run: echo "OPENAI_API_KEY=${{ OPENAI_API_KEY }}" >> $GITHUB_ENV
+      env:
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      run: echo "Environment variables set."
 
     - name: Clone Google Test
       run: |
@@ -59,6 +61,8 @@ jobs:
 
     - name: Analyze with ChatGPT
       if: always()
+      env:
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
       run: node analyze_results.js
 
     - name: Upload feedback

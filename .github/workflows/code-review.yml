@@ -32,10 +32,13 @@ jobs:
         cd /usr/src/googletest
         sudo cmake .
         sudo make
-        sudo cp googletest/libgtest.a /usr/lib
-        sudo cp googlemock/libgmock.a /usr/lib
-        sudo cp googletest/libgtest_main.a /usr/lib
-        sudo cp googlemock/libgmock_main.a /usr/lib
+
+    - name: Copy Google Test libraries
+      run: |
+        sudo cp /usr/src/googletest/build/lib/libgtest.a /usr/lib
+        sudo cp /usr/src/googletest/build/lib/libgmock.a /usr/lib
+        sudo cp /usr/src/googletest/build/lib/libgtest_main.a /usr/lib
+        sudo cp /usr/src/googletest/build/lib/libgmock_main.a /usr/lib
 
     - name: Configure CMake
       run: cmake .

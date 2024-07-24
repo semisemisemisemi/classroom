@@ -58,7 +58,7 @@ jobs:
     - name: Analyze with ChatGPT
       if: steps.run_tests.outcome == 'failure'
       run: |
-        python3 <<EOF
+        python3 -c "
 import openai
 import os
 
@@ -68,15 +68,15 @@ with open('build/result.log', 'r') as file:
     test_results = file.read()
 
 response = openai.Completion.create(
-  engine="gpt-3.5-turbo",
-  prompt=f"테스트 결과를 분석하고 피드백을 제공합니다: {test_results}",
+  engine='gpt-3.5-turbo',
+  prompt=f'테스트 결과를 분석하고 피드백을 제공합니다: {test_results}',
   max_tokens=500
 )
 
 feedback = response.choices[0].text.strip()
 with open('feedback.log', 'w') as file:
     file.write(feedback)
-EOF
+"
 
     - name: Upload feedback
       uses: actions/upload-artifact@v2

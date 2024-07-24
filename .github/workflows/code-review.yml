@@ -1,23 +1,20 @@
-name: Autograding Tests
-
-on:
-  push:
-  workflow_dispatch:
-  repository_dispatch
+name: Code Review From ChatGPT
 
 permissions:
-  checks: write
-  actions: read
   contents: read
+  pull-requests: write
+
+on:
+  pull_request:
+    types: [opened, synchronize]
 
 jobs:
-  run-autograding-tests:
+  code-review:
     runs-on: ubuntu-latest
-    if: github.actor != 'github-classroom[bot]'
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v2
 
     - name: Install dependencies
       run: |
@@ -51,11 +48,21 @@ jobs:
         cat result.log
 
     - name: Analyze with ChatGPT
-      run: python3 analyze_code.py
+      uses: anc95/ChatGPT-CodeReview@main
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        LANGUAGE: Korean
+        MODEL: gpt-3.5-turbo
+        CUSTOM_PROMPT: ${{ steps.get_prompt.outputs.prompt }}
 
     - name: Upload feedback
       uses: actions/upload-artifact@v2
       with:
         name: feedback
         path: feedback.log
- 
+
+    - name: Get custom prompt
+      id: get_prompt
+      run: |
+        echo "::set-output name=prompt::$(cat custom_prompt.txt)"

@@ -26,19 +26,15 @@ jobs:
       run: |
         cd /usr/src
         sudo git clone https://github.com/google/googletest.git
-
-    - name: Build Google Test
-      run: |
-        cd /usr/src/googletest
-        sudo cmake .
+        cd googletest
+        sudo mkdir -p build
+        cd build
+        sudo cmake ..
         sudo make
 
     - name: Copy Google Test libraries
       run: |
-        sudo cp /usr/src/googletest/build/lib/libgtest.a /usr/lib
-        sudo cp /usr/src/googletest/build/lib/libgmock.a /usr/lib
-        sudo cp /usr/src/googletest/build/lib/libgtest_main.a /usr/lib
-        sudo cp /usr/src/googletest/build/lib/libgmock_main.a /usr/lib
+        sudo cp /usr/src/googletest/build/lib/*.a /usr/lib
 
     - name: Configure CMake
       run: cmake .

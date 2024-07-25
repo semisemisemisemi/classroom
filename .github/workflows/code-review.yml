@@ -12,9 +12,6 @@ jobs:
   code-review:
     runs-on: ubuntu-latest
 
-    env:
-      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
@@ -76,4 +73,3 @@ jobs:
       with:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         path: feedback.log
- 

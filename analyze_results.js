@@ -2,7 +2,8 @@ import fs from 'fs';
 import { Configuration, OpenAIApi } from 'openai';
 import dotenv from 'dotenv';
 
-dotenv.config(); // .env 파일에서 환경 변수를 로드합니다.
+// .env 파일을 읽어 환경 변수를 설정합니다.
+dotenv.config();
 
 const apiKey = process.env.OPENAI_API_KEY;
 

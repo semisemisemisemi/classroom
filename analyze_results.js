@@ -1,7 +1,9 @@
 import fs from 'fs';
 import { Configuration, OpenAIApi } from 'openai';
+import dotenv from 'dotenv';
 
-// 환경 변수에서 API 키를 가져옵니다.
+dotenv.config(); // .env 파일에서 환경 변수를 로드합니다.
+
 const apiKey = process.env.OPENAI_API_KEY;
 
 if (!apiKey) {

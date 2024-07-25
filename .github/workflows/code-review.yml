@@ -24,6 +24,7 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y build-essential cmake git nodejs npm
         npm install
+        npm install dotenv
 
     - name: Clone Google Test
       run: |
@@ -62,7 +63,9 @@ jobs:
 
     - name: Analyze with ChatGPT
       if: always()
-      run: node analyze_results.js
+      run: |
+        echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" > .env
+        node analyze_results.js
 
     - name: Upload feedback
       uses: actions/upload-artifact@v2

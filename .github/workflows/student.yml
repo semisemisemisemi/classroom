@@ -12,18 +12,20 @@ jobs:
   code-review:
     runs-on: ubuntu-latest
 
-    env:
-      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
+
+    - name: Download .env file from main repo
+      uses: actions/download-artifact@v2
+      with:
+        name: env-file
+        path: .
 
     - name: Install dependencies
       run: |
         sudo apt-get update
         sudo apt-get install -y build-essential cmake git nodejs npm
-        npm install
         npm install dotenv
 
     - name: Clone Google Test
@@ -63,9 +65,7 @@ jobs:
 
     - name: Analyze with ChatGPT
       if: always()
-      run: |
-        echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" > .env
-        node analyze_results.js
+      run: node analyze_results.js
 
     - name: Upload feedback
       uses: actions/upload-artifact@v2
